@@ -44,11 +44,11 @@ This project is a web application built with Laravel for the backend and React w
 
 - **POST /api/login**
   - **Description**: Authenticate a user and return a token.
-  - **Request Body**:
+  - **Request Body**: (you can use it after running the ``` $ php artisan db:seed ``` command)
     ```json
     {
-      "email": "user@example.com",
-      "password": "your_password"
+      "email": "test@example.com",
+      "password": "password"
     }
     ```
   - **Response**: Returns an authentication token if successful.
