@@ -62,7 +62,7 @@ This project is a web application built with Laravel for the backend and React w
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/your-repo.git
+   git clone https://github.com/raniaSayed/izam-ecommerce.git
    cd izam-ecommerce
    ```
 
