@@ -28,8 +28,7 @@ import AppHeaderLayout from "@/layouts/app/app-header-layout";
 const ProductList = () => {
 
     const [products, setProducts] = useState <Product[]>([]);
-    // const [loading, setLoading] = useState(true);
-    // const [error, setError] = useState('');
+    const [error, setError] = useState('');
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
@@ -43,10 +42,8 @@ const ProductList = () => {
                     const categories = new Set(products.map((product: Product) => product.category));
                     setSelectedCategories(categories);
                 } catch (err) {
-                    console.log(err);
-                  //  setError('Failed to fetch products');
-                } finally {
-                 //   setLoading(false);
+                   setError('Failed to fetch products' + JSON.stringify(err));
+                    console.log({error})
                 }
             };
 
@@ -122,8 +119,6 @@ const ProductList = () => {
     };
 
     const filteredProducts = products.filter((product) => {
-        console.log('herrrer' );
-        console.log({ss: searchWord.toLowerCase()})
         return (
             product.price >= priceRange[0] &&
             product.price <= priceRange[1] &&
