@@ -59,7 +59,6 @@ This project is a web application built with Laravel for the backend and React w
 
 ## Setup Instructions
 
-### Backend (Laravel)
 
 1. **Clone the Repository**:
    ```bash
@@ -120,3 +119,8 @@ axios.get('/api/products', {
 User Logout:
 
 Call the /api/logout endpoint to invalidate the token.
+
+
+### Screenshot of website
+
+
