@@ -2,13 +2,14 @@ import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
-import InputError from '@/components/input-error';
-import TextLink from '@/components/text-link';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import InputError from '@/pages/components/input-error';
+import TextLink from '@/pages/components/text-link';
+import { Button } from '@/pages/components/ui/button';
+import { Checkbox } from '@/pages/components/ui/checkbox';
+import { Input } from '@/pages/components/ui/input';
+import { Label } from '@/pages/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
+import AppHeaderLayout from "@/layouts/app/app-header-layout";
 
 type LoginForm = {
     email: string;
@@ -36,10 +37,14 @@ export default function Login({ status, canResetPassword }: LoginProps) {
     };
 
     return (
-        <AuthLayout title="Log in to your account" description="Enter your email and password below to log in">
-            <Head title="Log in" />
+        <div>
+            <AppHeaderLayout/>
+            <div  >
+            <AuthLayout title="Welcome back" description="Please enter your details to sign in">
 
-            <form className="flex flex-col gap-6" onSubmit={submit}>
+            <Head  title="Log in"/>
+
+            <form  className="flex flex-col gap-6" onSubmit={submit}>
                 <div className="grid gap-6">
                     <div className="grid gap-2">
                         <Label htmlFor="email">Email address</Label>
@@ -52,9 +57,8 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             autoComplete="email"
                             value={data.email}
                             onChange={(e) => setData('email', e.target.value)}
-                            placeholder="email@example.com"
-                        />
-                        <InputError message={errors.email} />
+                            placeholder="email@example.com"/>
+                        <InputError message={errors.email}/>
                     </div>
 
                     <div className="grid gap-2">
@@ -74,9 +78,8 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             autoComplete="current-password"
                             value={data.password}
                             onChange={(e) => setData('password', e.target.value)}
-                            placeholder="Password"
-                        />
-                        <InputError message={errors.password} />
+                            placeholder="Password"/>
+                        <InputError message={errors.password}/>
                     </div>
 
                     <div className="flex items-center space-x-3">
@@ -85,13 +88,12 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             name="remember"
                             checked={data.remember}
                             onClick={() => setData('remember', !data.remember)}
-                            tabIndex={3}
-                        />
+                            tabIndex={3}/>
                         <Label htmlFor="remember">Remember me</Label>
                     </div>
 
                     <Button type="submit" className="mt-4 w-full" tabIndex={4} disabled={processing}>
-                        {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
+                        {processing && <LoaderCircle className="h-4 w-4 animate-spin"/>}
                         Log in
                     </Button>
                 </div>
@@ -106,5 +108,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
             {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}
         </AuthLayout>
+            </div>
+        </div>
     );
 }
