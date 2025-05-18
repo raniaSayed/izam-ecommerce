@@ -1,4 +1,4 @@
-# Project Name
+# Izam Ecommerce
 
 ## Overview
 
@@ -89,3 +89,34 @@ Run Migrations:
 $ php artisan migrate
 $ php artisan db:seed
 ```
+
+
+Start the Laravel Development Server for both (FE, BE):
+
+```bash
+$ composer run dev 
+```
+
+Authentication Flow
+User Login:
+
+The user submits their email and password to the /api/login endpoint.
+If successful, the server responds with an authentication token.
+Token Storage:
+
+Store the token in local storage or a state management solution for future requests.
+Access Protected Routes:
+
+Use the token for authenticated requests by including it in the headers:
+javascript
+
+```bash
+axios.get('/api/products', {
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+});
+```
+User Logout:
+
+Call the /api/logout endpoint to invalidate the token.
