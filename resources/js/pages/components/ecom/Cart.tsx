@@ -1,20 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import {
-  Box,
-  Drawer,
-  Typography,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemAvatar,
-  Avatar,
-  Button,
-  Divider,
-  useTheme,
-  useMediaQuery,
-  Stack,
-  ButtonGroup,
+    Box,
+    Drawer,
+    Typography,
+    IconButton,
+    List,
+    ListItem,
+    ListItemText,
+    ListItemAvatar,
+    Avatar,
+    Button,
+    Divider,
+    useTheme,
+    useMediaQuery,
+    Stack,
+    ButtonGroup, Grid, Card, CardMedia, CardContent,
 } from '@mui/material';
 import { Close, Add, Remove, Delete } from '@mui/icons-material';
 import {CartItem} from './types';
@@ -30,23 +30,13 @@ interface CartProps {
   onCheckout: () => void;
 }
 
-const Cart: React.FC<CartProps> = (
-    {
-  // open,
-  // onClose,
-  // items,
-  // onUpdateQuantity,
-  // onRemoveItem,
-  // onCheckout,
-}
-) => {
+const Cart: React.FC<CartProps> = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-   const items = JSON.parse(localStorage.getItem('cart') || '[]');
+  const items = JSON.parse(localStorage.getItem('cart') || '[]');
 
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
     const [isCartOpen, setIsCartOpen] = useState(true);
-    // const items = JSON.parse(localStorage.getItem('cart') || '[]');
     useEffect(() => {
        setCartItems(items);
         console.log({items})
@@ -78,13 +68,7 @@ const Cart: React.FC<CartProps> = (
         });
         console.log({response})
         localStorage.removeItem('cart');
-        setCartItems(
-            response.data.data.map((item: any) => ({
-                id: item.id,
-                product: item.product,
-                quantity: item.quantity,
-            }))
-        )
+        setCartItems([]);
         setIsCartOpen(false);
     };
     const calculateTotal = () => {
@@ -147,7 +131,7 @@ const Cart: React.FC<CartProps> = (
                     <ListItemAvatar>
                       <Avatar
                         variant="square"
-                        src={item.product.image}
+                        src={item.product.image_url}
                         alt={item.product.name}
                         sx={{ width: 60, height: 60, mr: 2 }}
                       />
@@ -169,7 +153,7 @@ const Cart: React.FC<CartProps> = (
                             <Button disabled>{item.quantity}</Button>
                             <IconButton
                               onClick={() => handleUpdateQuantity(item.product.id, item.quantity + 1)}
-                              disabled={item.quantity >= item.product.stock}
+                              disabled={item.quantity >= item.product.quantity}
                             >
                               <Add fontSize="small" />
                             </IconButton>
@@ -215,6 +199,104 @@ const Cart: React.FC<CartProps> = (
             </Box>
           </Box>
         </Drawer>
+
+            <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Typography variant="h6">Shopping Cart</Typography>
+                    <IconButton onClick={onClose}>
+                        <Close />
+                    </IconButton>
+                </Box>
+
+                <Divider />
+
+                {cartItems.length === 0 ? (
+                    <Box sx={{ p: 4, textAlign: 'center' }}>
+                        <Typography color="text.secondary">Your cart is empty</Typography>
+                        <Button onClick={onClose} sx={{ mt: 2 }} href={route('product-list')}>
+                            Continue Shopping
+                        </Button>
+                    </Box>
+                ) : (
+                        <Grid container spacing={3} sx={{ flexGrow: 1 }}>
+                            {cartItems.map((item) => (
+                                <Grid item xs={12} sm={6} md={4} key={item.product.id}>
+                                    <Card sx={{ maxWidth: 250, height: '100%' }}>
+                                        <CardMedia
+                                            component="img"
+                                            height="140"
+                                            image={item.product.image_url}
+                                            alt={item.product.name}
+                                        />
+                                        <CardContent>
+                                            <Typography variant="h6">{item.product.name}</Typography>
+                                            <Typography variant="body2" color="text.secondary">
+                                                ${item.product.price}
+                                            </Typography>
+                                            <Box sx={{ mt: 1, display: 'flex', alignItems: 'center' }}>
+                                                <ButtonGroup size="small">
+                                                    <IconButton
+                                                        onClick={() => handleUpdateQuantity(item.product.id, item.quantity - 1)}
+                                                        disabled={item.quantity <= 1}
+                                                    >
+                                                        <Remove fontSize="small" />
+                                                    </IconButton>
+                                                    <Button disabled>{item.quantity}</Button>
+                                                    <IconButton
+                                                        onClick={() => handleUpdateQuantity(item.product.id, item.quantity + 1)}
+                                                        disabled={item.quantity >= item.product.quantity}
+                                                    >
+                                                        <Add fontSize="small" />
+                                                    </IconButton>
+                                                </ButtonGroup>
+                                                <IconButton
+                                                    edge="end"
+                                                    onClick={() => handleRemoveFromCart(item.product.id)}
+                                                    color="error"
+                                                    sx={{ ml: 2 }}
+                                                >
+                                                    <Delete />
+                                                </IconButton>
+                                            </Box>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            ))}
+                        </Grid>
+                )}
+
+                <Box sx={{ p: 2, borderTop: 1, borderColor: 'divider' }}>
+                    <Stack spacing={1}>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <Typography>Subtotal</Typography>
+                            <Typography>${subtotal}</Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <Typography>Shipping</Typography>
+                            <Typography>${shipping}</Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <Typography>Tax</Typography>
+                            <Typography>${tax}</Typography>
+                        </Box>
+                        <Divider />
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <Typography variant="h6">Total</Typography>
+                            <Typography variant="h6">${total}</Typography>
+                        </Box>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            size="large"
+                            onClick={handleCheckout}
+                            disabled={cartItems.length === 0}
+                            fullWidth
+                        >
+                            Checkout
+                        </Button>
+                    </Stack>
+                </Box>
+            </Box>
      </div>
   );
 };
