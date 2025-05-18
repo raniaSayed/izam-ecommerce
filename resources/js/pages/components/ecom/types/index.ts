@@ -3,8 +3,9 @@ export interface Product {
   name: string;
   price: number;
   category: string;
-  image: string;
-  stock: number;
+  image_url: string;
+  quantity: number;
+  selectedQuantity: number;
 }
 
 
@@ -12,6 +13,7 @@ export interface CartItem {
   id: number;
   product: Product;
   quantity: number;
+  selectedQuantity: number;
 }
 
 // export interface FilterState {

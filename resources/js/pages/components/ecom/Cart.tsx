@@ -66,7 +66,6 @@ const Cart: React.FC<CartProps> = () => {
             products: cartItems.map((ci) =>  ({ id: ci.id, quantity: ci.quantity })),
             total: total
         });
-        console.log({response})
         localStorage.removeItem('cart');
         setCartItems([]);
         setIsCartOpen(false);

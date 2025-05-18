@@ -7,7 +7,6 @@ import {LogOut} from "lucide-react";
 import {useMobileNavigation} from "@/hooks/use-mobile-navigation";
 import SearchIcon from '@mui/icons-material/Search';
 export default function AppHeaderLayout({ children, breadcrumbs }: PropsWithChildren<{ breadcrumbs?: BreadcrumbItem[] }>) {
-    console.log('before layout')
     const cleanup = useMobileNavigation();
 
     const handleLogout = () => {
@@ -42,15 +41,16 @@ export default function AppHeaderLayout({ children, breadcrumbs }: PropsWithChil
                 <Link href={route('cart')}>
                 <ShoppingCartRoundedIcon sx={{ mr: 1 }} style={{color: 'black'}}  />
                 </Link>
+            {/*    {if (this.authenticated())*/}
+            {/*    <Button variant="contained" sx={{ bgcolor: 'black', color: 'white' }}  href={route('login')}>*/}
+            {/*        Login*/}
+            {/*    </Button>*/}
+            {/*}*/}
+                <Link className="block w-full" method="post" href={route('logout')} as="button" onClick={handleLogout}>
                 <Button variant="contained" sx={{ bgcolor: 'black', color: 'white' }}  href={route('login')}>
-                    Login
+                    Logout
                 </Button>
-
-                {/*<Link method='post' href={'logout'} as="button" onClick={handleLogout}> Logout </Link>*/}
-                {/*<Link className="block w-full" method="post" href={route('logout')} as="button" onClick={handleLogout}>*/}
-                {/*    <LogOut className="mr-2" />*/}
-                {/*    Log out*/}
-                {/*</Link>*/}
+                </Link>
             </Toolbar>
         </AppBar>
     );
