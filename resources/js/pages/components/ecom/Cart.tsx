@@ -39,8 +39,6 @@ const Cart: React.FC<CartProps> = () => {
     const [isCartOpen, setIsCartOpen] = useState(true);
     useEffect(() => {
        setCartItems(items);
-        console.log({items})
-        console.log({cartItems})
     }, []);
 
 
@@ -54,8 +52,19 @@ const Cart: React.FC<CartProps> = () => {
                 item.product.id === productId ? { ...item, quantity: newQuantity } : item
             )
         );
+        handleAddToCart(productId);
     };
 
+    function handleAddToCart(productId) {
+        const cartItem = items.find((cartItem) => cartItem.id === productId);
+
+        if (cartItem) {
+            cartItem.quantity += 1;
+        } else {
+            items.push({id: productId, product: cartItem.product, quantity: 1});
+        }
+        localStorage.setItem('cart', JSON.stringify(items));
+    }
     const handleRemoveFromCart = (productId: number) => {
         setCartItems((prevItems) => prevItems.filter((item) => item.id !== productId));
     };
