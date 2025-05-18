@@ -123,4 +123,17 @@ Call the /api/logout endpoint to invalidate the token.
 
 ### Screenshot of website
 
+Product List
+![product list](https://github.com/raniaSayed/izam-ecommerce/blob/main/public/images/Screenshot%202025-05-18%20at%207.35.48%E2%80%AFPM.png)
 
+Shopinng cart
+![shopinng cart](https://github.com/raniaSayed/izam-ecommerce/blob/main/public/images/Screenshot%202025-05-18%20at%207.35.58%E2%80%AFPM.png)
+
+Shoping cart after checkout
+![shoping cart after checkout](https://github.com/raniaSayed/izam-ecommerce/blob/main/public/images/Screenshot%202025-05-18%20at%207.36.07%E2%80%AFPM.png)
+
+Filter product list whith price range and categories
+![filter product list whith price range and categories](https://github.com/raniaSayed/izam-ecommerce/blob/main/public/images/Screenshot%202025-05-18%20at%207.36.28%E2%80%AFPM.png)
+
+Filter product list with product name search
+![filter product list with product name search](https://github.com/raniaSayed/izam-ecommerce/blob/main/public/images/Screenshot%202025-05-18%20at%207.36.45%E2%80%AFPM.png)
