@@ -14,7 +14,7 @@ class OrderController extends Controller
         // Validate
         $validatedOrder = $this->validateOrder($request);
         // Save
-        $order = $this->saveOrder($validatedOrder);
+        $order = $this->saveOrder($validatedOrder, $request->total);
         // Response
         return response()->json($order, 201);
     }
@@ -31,12 +31,14 @@ class OrderController extends Controller
             'products' => 'required|array',
             'products.*.id' => 'required|exists:products,id',
             'products.*.quantity' => 'required|integer|min:1',
+            'total' => 'required|regex:/^\d+(\.\d{1,2})?$/',
         ]);
     }
 
-    public function saveOrder($validatedOrder)
+    public function saveOrder($validatedOrder, $total)
     {
         $order = Order::create(['user_id' => auth()->id(), 'total' => 0]);
+        $subtotal = 0;
 
         foreach ($validatedOrder['products'] as $productData) {
             $product = Product::findOrFail($productData['id']);
@@ -48,7 +50,12 @@ class OrderController extends Controller
             }
 
             $order->products()->attach($product->id, ['quantity' => $productData['quantity']]);
-            $order->total += $product->price * $productData['quantity'];
+            $subtotal += $product->price * $productData['quantity'];
+        }
+        if($total > $subtotal ){
+            $order->total = $total;
+        } else {
+            $order->total = $subtotal;
         }
         $order->save();
         event(new OrderPlaced($order));

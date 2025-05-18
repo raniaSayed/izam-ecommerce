@@ -12,6 +12,8 @@ class ProductController extends Controller
     {
         $query = Product::query();
 
+        $query->where('is_available', '=', '1');
+
         // Filtering
         if ($request->has('name')) {
             $query->where('name', 'like', '%' . $request->name . '%');

@@ -20,7 +20,7 @@ class ProductFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'price' => fake()->numberBetween(100,1000),
+            'price' => fake()->numberBetween(0,400),
             'quantity' => fake()->numberBetween(100,1000),
             'is_available' => fake()->boolean(),
             'category' => fake()->randomElement(['T-shirts', 'Polo', 'Jeans', 'Shirts']),
