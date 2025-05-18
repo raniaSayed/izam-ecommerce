@@ -3,12 +3,12 @@ import { Transition } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
-import DeleteUser from '@/components/delete-user';
-import HeadingSmall from '@/components/heading-small';
-import InputError from '@/components/input-error';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import DeleteUser from '@/pages/components/delete-user';
+import HeadingSmall from '@/pages/components/heading-small';
+import InputError from '@/pages/components/input-error';
+import { Button } from '@/pages/components/ui/button';
+import { Input } from '@/pages/components/ui/input';
+import { Label } from '@/pages/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 
