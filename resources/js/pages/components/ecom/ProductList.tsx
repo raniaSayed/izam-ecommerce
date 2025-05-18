@@ -18,11 +18,11 @@ import {
     Fab,
     Breadcrumbs,
     Link,
-    Pagination,
+    Pagination, ButtonGroup, TextField,
 } from '@mui/material';
-import { FilterList, Add, Remove, ShoppingCart } from '@mui/icons-material';
+import {FilterList, Add, Remove} from '@mui/icons-material';
 import axios from "axios";
-import {Product} from "@/pages/components/ecom/types";
+import {CartItem, Product} from "@/pages/components/ecom/types";
 import AppHeaderLayout from "@/layouts/app/app-header-layout";
 
 const ProductList = () => {
@@ -30,11 +30,15 @@ const ProductList = () => {
     const [products, setProducts] = useState <Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [cartItems, setCartItems] = useState<CartItem[]>([]);
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
     useEffect(() => {
             const fetchProducts = async () => {
                 try {
                     const response = await axios.get('/api/products');
                     const products = response.data.data;
+                    products.map((p: Product) => p.selectedQuantity = 0);
                     setProducts(products);
                     const categories = new Set(products.map((product: Product) => product.category));
                     setSelectedCategories(categories);
@@ -46,17 +50,20 @@ const ProductList = () => {
             };
 
             fetchProducts();
-
-
+            setCartItems(cart);
+            console.log({cart})
+            console.log({cartItems})
     }, []);
 
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const handleAddProductToCart = (productId: number) => () => {
+    function handleAddProductToCart (productId: number){
+        console.log({productId});
         const product = products.find((product) => product.id === productId);
+        console.log({product})
         if (!product) {
             return;
         }
         const cartItem = cart.find((cartItem) => cartItem.id === productId);
+        console.log({cartItem})
         if (cartItem) {
             cartItem.quantity += 1;
         } else {
@@ -64,6 +71,8 @@ const ProductList = () => {
         }
         console.log({cart});
         localStorage.setItem('cart', JSON.stringify(cart));
+        setCartItems(cart);
+
     }
 
     const theme = useTheme();
@@ -72,12 +81,30 @@ const ProductList = () => {
     const [priceRange, setPriceRange] = useState<number[]>([0, 300]);
     const categories = new Set(products.map((product) => product.category));
     const [selectedCategories, setSelectedCategories] = useState<Set<string>>(new Set(categories));
-
-    console.log({selectedCategories});
-    console.log({cat: products.map((product) => product.category)});
-
+    const [searchWord, setSearchWord] = useState('');
     const [page, setPage] = useState(1);
     const productsPerPage = 6;
+
+    const handleUpdateQuantity = (productId: number, newQuantity: number) => {
+        console.log({newQuantity})
+        if (newQuantity <= 0) {
+            handleRemoveFromCart(productId);
+            return;
+        }
+        const selectedProduct = products.find((p: Product) => p.id  == productId);
+        if(selectedProduct) selectedProduct.selectedQuantity = newQuantity;
+        setCartItems((prevItems) =>
+            prevItems.map((item) =>
+                item.product.id === productId ? { ...item, quantity: newQuantity } : item
+            )
+        );
+        console.log('before handleAddProductToCart', productId)
+        handleAddProductToCart(productId);
+    };
+
+    const handleRemoveFromCart = (productId: number) => {
+        setCartItems((prevItems) => prevItems.filter((item) => item.id !== productId));
+    };
 
     const handlePriceChange = (event: Event, newValue: number | number[]) => {
         setPriceRange(newValue as number[]);
@@ -85,9 +112,6 @@ const ProductList = () => {
 
     const handleCategoryChange = (category: string) => {
         const newCategories = new Set(selectedCategories);
-        console.log({newCategories});
-        console.log({selectedCategories});
-        console.log({newCategories});
         if (newCategories.has(category)) {
             newCategories.delete(category);
         } else {
@@ -97,13 +121,15 @@ const ProductList = () => {
     };
 
     const filteredProducts = products.filter((product) => {
+        console.log('herrrer' );
+        console.log({ss: searchWord.toLowerCase()})
         return (
             product.price >= priceRange[0] &&
             product.price <= priceRange[1] &&
+            product.name.toLowerCase().includes(searchWord.toLowerCase()) &&
             selectedCategories.has(product.category)
         );
     });
-    console.log({filteredProducts});
 
     const pageCount = Math.ceil(filteredProducts.length / productsPerPage);
     const currentProducts = filteredProducts.slice(
@@ -151,15 +177,23 @@ const ProductList = () => {
     return (
         <div>
         <AppHeaderLayout />
-        <Box sx={{ p: { xs: 2, md: 4 } }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+
+            <Box sx={{ p: { xs: 2, md: 4 } }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
                 <Breadcrumbs>
                     <Link color="inherit" href="/public">
                         Home
                     </Link>
                     <Typography color="text.primary">Products</Typography>
                 </Breadcrumbs>
-                {isMobile ? (
+                    <br />
+                    <TextField
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                            setSearchWord(event.target.value);
+                        }}
+                        fullWidth label="Search Products....." id="fullWidth" style={{width: '100%'}} />
+
+                        {isMobile ? (
                     <Fab
                         size="small"
                         color="primary"
@@ -180,19 +214,15 @@ const ProductList = () => {
             </Box>
 
             <Grid container spacing={3}>
-                {!isMobile && (
+                {isMobile && (
                     <Grid size={{ xs: 12, md: 4 }}>
-                        {/*item*/}
                         {FilterDrawer}
                     </Grid>
                 )}
                 <Grid  size={{xs: 12, md:9}}>
-                    {/*item*/}
                     <Grid container spacing={2}>
                         {currentProducts.map((product: any) => (
                             <Grid  size={{ xs: 12, sm:6, md: 4}} key={product.id}>
-                                {/*item*/}
-
                                 <Card>
                                     <CardMedia
                                         component="img"
@@ -209,9 +239,28 @@ const ProductList = () => {
                                         </Typography>
                                         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                             <Typography variant="h6">${product.price}</Typography>
-                                            <IconButton color="primary">
-                                                <ShoppingCart  onClick={handleAddProductToCart(product.id)}/>
-                                            </IconButton>
+                                            <Typography color="text.secondary" variant="h6">Stock: {product.quantity}</Typography>
+                                        </Box>
+
+
+                                    {/*    start from here */}
+                                        <Box sx={{ mt: 1, display: 'flex', alignItems: 'center' }}>
+                                            <ButtonGroup size="small">
+                                                <IconButton
+                                                    onClick={() => handleUpdateQuantity(product.id, product.selectedQuantity - 1)}
+                                                    disabled={product.selectedQuantity <= 0}
+                                                >
+                                                    <Remove fontSize="small" />
+                                                </IconButton>
+                                                <Button disabled>{product.selectedQuantity}</Button>
+                                                <IconButton
+                                                    onClick={() => handleUpdateQuantity(product.id, product.selectedQuantity + 1)}
+                                                    disabled={product.selectedQuantity >= product.quantity}
+                                                >
+                                                    <Add fontSize="small" />
+                                                </IconButton>
+                                            </ButtonGroup>
+
                                         </Box>
                                     </CardContent>
                                 </Card>
