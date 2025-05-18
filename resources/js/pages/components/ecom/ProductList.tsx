@@ -37,7 +37,10 @@ const ProductList = () => {
                 try {
                     const response = await axios.get('/api/products');
                     const products = response.data.data;
-                    products.map((p: Product) => p.selectedQuantity = 0);
+                    products.forEach((p: Product) =>{
+                        const cartItem = cart.find((ci: CartItem) => ci.id === p.id);
+                        p.selectedQuantity = cartItem?.quantity || 0;
+                    });
                     setProducts(products);
                     const categories = new Set(products.map((product: Product) => product.category));
                     setSelectedCategories(categories);

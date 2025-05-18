@@ -67,6 +67,8 @@ const Cart: React.FC<CartProps> = () => {
     }
     const handleRemoveFromCart = (productId: number) => {
         setCartItems((prevItems) => prevItems.filter((item) => item.id !== productId));
+        const cards = items.filter((item) => item.id !== productId);
+        localStorage.setItem('cart', JSON.stringify(cards));
     };
 
     const handleCheckout = async () => {
