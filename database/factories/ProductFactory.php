@@ -24,6 +24,7 @@ class ProductFactory extends Factory
             'quantity' => fake()->numberBetween(100,1000),
             'is_available' => fake()->boolean(),
             'category' => fake()->randomElement(['T-shirts', 'Polo', 'Jeans', 'Shirts']),
+            'image_url' => 'https://images.pexels.com/photos/297933/pexels-photo-297933.jpeg?auto=compress&cs=tinysrgb&w=600',
         ];
 
     }

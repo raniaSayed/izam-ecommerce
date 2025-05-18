@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->boolean('is_available');
             $table->string('category')->nullable();
+            $table->string('image_url')->nullable();
             $table->timestamps();
         });
     }

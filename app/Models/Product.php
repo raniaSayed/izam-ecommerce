@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use hasFactory;
-    protected $fillable = ['name', 'price','quantity','is_available','category'];
+    protected $fillable = ['name', 'price','quantity','is_available','category', 'image_url'];
     protected static function factory(): Factory
     {
         return ProductFactory::new();
