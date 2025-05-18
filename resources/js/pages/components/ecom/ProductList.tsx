@@ -43,6 +43,7 @@ const ProductList = () => {
                     const categories = new Set(products.map((product: Product) => product.category));
                     setSelectedCategories(categories);
                 } catch (err) {
+                    console.log(err);
                   //  setError('Failed to fetch products');
                 } finally {
                  //   setLoading(false);

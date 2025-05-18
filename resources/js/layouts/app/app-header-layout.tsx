@@ -1,16 +1,16 @@
 import {AppBar, Button, Box, Toolbar} from "@mui/material";
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
-import {Link, router} from "@inertiajs/react";
+import {Link} from "@inertiajs/react";
 // import {LogOut} from "lucide-react";
-import {useMobileNavigation} from "@/hooks/use-mobile-navigation";
+// import {useMobileNavigation} from "@/hooks/use-mobile-navigation";
 import SearchIcon from '@mui/icons-material/Search';
 export default function AppHeaderLayout() {
-    const cleanup = useMobileNavigation();
+    // const cleanup = useMobileNavigation();
 
-    const handleLogout = () => {
-        cleanup();
-        router.flushAll();
-    };
+    // const handleLogout = () => {
+    //     cleanup();
+    //     router.flushAll();
+    // };
     return (
         <AppBar position="static">
             <Toolbar sx={{ backgroundColor: 'white', boxShadow: 'none' }}>
