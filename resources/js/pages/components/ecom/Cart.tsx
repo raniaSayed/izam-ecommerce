@@ -62,7 +62,7 @@ const Cart: React.FC<CartProps> = () => {
 
     const handleCheckout = async () => {
         alert('Proceeding to checkout!');
-        const response = await axios.post('/api/orders', {
+        await axios.post('/api/orders', {
             products: cartItems.map((ci) =>  ({ id: ci.id, quantity: ci.quantity })),
             total: total
         });

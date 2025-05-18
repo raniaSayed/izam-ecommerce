@@ -1,12 +1,10 @@
-import { type BreadcrumbItem } from '@/types';
-import type { PropsWithChildren } from 'react';
 import {AppBar, Button, Box, Toolbar} from "@mui/material";
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import {Link, router} from "@inertiajs/react";
-import {LogOut} from "lucide-react";
+// import {LogOut} from "lucide-react";
 import {useMobileNavigation} from "@/hooks/use-mobile-navigation";
 import SearchIcon from '@mui/icons-material/Search';
-export default function AppHeaderLayout({ children, breadcrumbs }: PropsWithChildren<{ breadcrumbs?: BreadcrumbItem[] }>) {
+export default function AppHeaderLayout() {
     const cleanup = useMobileNavigation();
 
     const handleLogout = () => {
@@ -42,15 +40,15 @@ export default function AppHeaderLayout({ children, breadcrumbs }: PropsWithChil
                 <ShoppingCartRoundedIcon sx={{ mr: 1 }} style={{color: 'black'}}  />
                 </Link>
             {/*    {if (this.authenticated())*/}
-            {/*    <Button variant="contained" sx={{ bgcolor: 'black', color: 'white' }}  href={route('login')}>*/}
-            {/*        Login*/}
-            {/*    </Button>*/}
-            {/*}*/}
-                <Link className="block w-full" method="post" href={route('logout')} as="button" onClick={handleLogout}>
                 <Button variant="contained" sx={{ bgcolor: 'black', color: 'white' }}  href={route('login')}>
-                    Logout
+                    Login
                 </Button>
-                </Link>
+            {/*}*/}
+                {/*<Link className="block w-full" method="post" href={route('logout')} as="button" onClick={handleLogout}>*/}
+                {/*<Button variant="contained" sx={{ bgcolor: 'black', color: 'white' }}  href={route('login')}>*/}
+                {/*    Logout*/}
+                {/*</Button>*/}
+                {/*</Link>*/}
             </Toolbar>
         </AppBar>
     );

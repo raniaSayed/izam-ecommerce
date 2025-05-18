@@ -28,8 +28,8 @@ import AppHeaderLayout from "@/layouts/app/app-header-layout";
 const ProductList = () => {
 
     const [products, setProducts] = useState <Product[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
+    // const [loading, setLoading] = useState(true);
+    // const [error, setError] = useState('');
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
@@ -43,9 +43,9 @@ const ProductList = () => {
                     const categories = new Set(products.map((product: Product) => product.category));
                     setSelectedCategories(categories);
                 } catch (err) {
-                    setError('Failed to fetch products');
+                  //  setError('Failed to fetch products');
                 } finally {
-                    setLoading(false);
+                 //   setLoading(false);
                 }
             };
 
@@ -221,7 +221,7 @@ const ProductList = () => {
                 )}
                 <Grid  size={{xs: 12, md:9}}>
                     <Grid container spacing={2}>
-                        {currentProducts.map((product: any) => (
+                        {currentProducts.map((product: Product) => (
                             <Grid  size={{ xs: 12, sm:6, md: 4}} key={product.id}>
                                 <Card>
                                     <CardMedia
